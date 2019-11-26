@@ -1,4 +1,4 @@
-package main
+package pwn
 
 import (
 	"bufio"
@@ -8,20 +8,23 @@ import (
 	"os"
 )
 
-const addr = "localhost:8080"
-
-func main() {
+//Process func for connect
+func Process(addr string) (c net.Conn) {
 	conn, err := net.Dial("tcp", addr)
 	if err != nil {
 		log.Printf("Failed to connect: " + err.Error())
 	}
-	defer conn.Close()
+	return conn
+}
+
+//Interactive IO
+func Interactive(c net.Conn) {
 	for {
 		fmt.Printf("# ")
 		sendData, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-		conn.Write([]byte(sendData))
+		c.Write([]byte(sendData))
 		responseBuffer := make([]byte, 4096)
-		numBytesRead, err := conn.Read(responseBuffer)
+		numBytesRead, err := c.Read(responseBuffer)
 		if err != nil {
 			log.Printf("Error reading from server. " + err.Error())
 			break
