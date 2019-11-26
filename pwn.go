@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"net"
 	"os"
 )
@@ -12,7 +13,7 @@ const addr = "localhost:8080"
 func main() {
 	conn, err := net.Dial("tcp", addr)
 	if err != nil {
-		panic("Failed to connect: " + err.Error())
+		log.Printf("Failed to connect: " + err.Error())
 	}
 	defer conn.Close()
 	for {
@@ -22,7 +23,7 @@ func main() {
 		responseBuffer := make([]byte, 4096)
 		numBytesRead, err := conn.Read(responseBuffer)
 		if err != nil {
-			fmt.Print("Error reading from server. ", err)
+			log.Printf("Error reading from server. " + err.Error())
 			break
 		}
 		fmt.Printf("%s", responseBuffer[0:numBytesRead])
