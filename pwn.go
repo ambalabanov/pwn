@@ -10,11 +10,11 @@ import (
 
 //Process func for connect
 func Process(addr string) (c net.Conn) {
-	conn, err := net.Dial("tcp", addr)
+	c, err := net.Dial("tcp", addr)
 	if err != nil {
 		log.Printf("Failed to connect: " + err.Error())
 	}
-	return conn
+	return
 }
 
 //Interactive IO
